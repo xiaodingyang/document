@@ -1164,7 +1164,61 @@ export default {
 
 #### 1.1.1.3 基础组件的自动化全局注册
 
+可能你的许多组件只是包裹了一个输入框或按钮之类的元素，是相对通用的。我们有时候会把它们称为[基础组件](https://cn.vuejs.org/v2/style-guide/#基础组件名-强烈推荐)，它们会在各个组件中被频繁的用到。
 
+如果你恰好使用了 webpack (或在内部使用了 webpack 的 [Vue CLI 3+](https://github.com/vuejs/vue-cli))，那么就可以使用 `require.context` 只全局注册这些非常通用的基础组件。这里有一份可以让你在应用入口文件 (比如 `src/main.js`) 中全局导入基础组件的示例代码：
+
+1. 将这些通用基础组件放置在同一个文件夹下：如 components/baseComponents/（这里我放了BaseText和BaseNumber两个vue组件）
+2. 在应用入口文件中全局导入（如：main.js）
+
+```js
+import Vue from 'vue'
+import upperFirst from 'lodash/upperFirst' //应用模块
+import camelCase from 'lodash/camelCase' //转为驼峰命名
+// 全局导入组件
+const requireComponent = require.context(
+    './components/baseComponents', // 其组件目录的相对路径
+    false, // 是否查询其子目录
+    /Base[A-Z]\w+\.(vue|js)$/ // 匹配基础组件文件名的正则表达式，这里可以匹配的文件名为BaseXxxx.vue格式
+)
+
+requireComponent.keys().forEach(fileName => {
+    const componentConfig = requireComponent(fileName) // 获取组件配置
+    // 获取组件的 PascalCase 命名
+    const componentName = upperFirst(
+        camelCase(
+            // 剥去文件名开头的 `'./` 和结尾的扩展名
+            fileName.split('/').pop().replace(/\.\w+$/, '')
+        )
+    )
+
+    // 全局注册组件
+    Vue.component(
+        componentName,
+        // 如果这个组件选项是通过 `export default` 导出的，
+        // 那么就会优先使用 `.default`，
+        // 否则回退到使用模块的根。
+        componentConfig.default || componentConfig
+    )
+})
+```
+
+3. 使用
+
+```html
+<template>
+  <div>
+    <BaseText></BaseText>
+    <BaseNumber></BaseNumber>
+  </div>
+</template>
+```
+
+
+
+> 记住**全局注册的行为必须在根 Vue 实例 (通过 `new Vue`) 创建之前发生**。
+>
+> 结合后面我们学习要学习到的自定义组建的v-model，我们可以做出全局的自定义v-model
 
 ### 1.1.2 组件中的data
 
@@ -1529,6 +1583,209 @@ var vm = new Vue({
     login
   }
 });
+```
+
+## 1.4 自定义事件
+
+### 1.4.1 自定义组件的 v-model
+
+一个组件上的 `v-model` 默认会利用名为 `value` 的 prop 和名为 `input` 的事件，但是像单选框、复选框等类型的输入控件可能会将 `value` attribute 用于[不同的目的](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox#Value)。`model` 选项可以用来避免这样的冲突：
+
+```vue
+<template>
+  <div>
+    <input type="text" :value="value" @input="$emit('input', $event.target.value)" />
+  </div>
+</template>
+
+<script>
+export default {
+  model: {
+    prop: 'value',
+    event: 'input'
+  },
+  props: {
+    value: String
+  }
+};
+</script>
+```
+
+现在在这个组件上使用 `v-model` 的时候：
+
+```html
+<template>
+  <div>
+    <Test v-model="value"></Test>
+    <div>{{value}}</div>
+  </div>
+</template>
+
+<script>
+import Test from './test';
+export default {
+  data() {
+    return {
+      value: '初始数据'
+    };
+  },
+  components: { Test }
+};
+</script>
+```
+
+这里的 `value` 的值将会传入这个名为 `value` 的 prop。同时当 `` 触发一个 `input` 事件并附带一个新的值的时候，这个 `value` 的 property 将会被更新。div中的value值也会动态的更新。
+
+> 注意你仍然需要在组件的 `props` 选项里声明 `value` 这个 prop。
+
+> 结合之前我们学习过的基础组件的自动化全局注册，我们可以做出全局的自定义v-model表单
+
+
+
+### 1.4.2 将原生事件绑定到组件
+
+你可能有很多次想要在一个组件的根元素上直接监听一个原生事件。这时，你可以使用 `v-on` 的 `.native` 修饰符：
+
+```html
+<base-input v-on:focus.native="onFocus"></base-input>
+```
+
+在有的时候这是很有用的，不过在你尝试监听一个类似 `` 的非常特定的元素时，这并不是个好主意。比如上述 `` 组件可能做了如下重构，所以根元素实际上是一个 `label` 元素：
+
+```html
+<label>
+  {{ label }}
+  <input
+    v-bind="$attrs"
+    v-bind:value="value"
+    v-on:input="$emit('input', $event.target.value)"
+  >
+</label>
+```
+
+这时，父级的 `.native` 监听器将静默失败。它不会产生任何报错，但是 `onFocus` 处理函数不会如你预期地被调用。
+
+为了解决这个问题，Vue 提供了一个 `$listeners` property，它是一个对象，里面包含了作用在这个组件上的所有监听器。如以上`base-input`的 `focus` 监听器
+
+有了这个 `$listeners` property，你就可以配合 `v-on="$listeners"` 将所有的事件监听器指向这个组件的某个特定的子元素。对于类似 `input` 你希望它也可以配合 `v-model` 工作的组件来说，为这些监听器创建一个类似下述 `inputListeners` 的计算属性通常是非常有用的：
+
+```html
+<template>
+  <div>
+    <label>
+      {{ label }}
+      <input v-bind="$attrs" v-on="inputListeners" />
+    </label>
+  </div>
+</template>
+
+<script>
+export default {
+  inheritAttrs: false,
+  props: ['label'],
+  computed: {
+    inputListeners: function() {
+      var vm = this;
+      // 将所有的对象合并为一个新对象
+      return {
+        ...this.$listeners, // 我们从父级添加所有的监听器 然后我们添加自定义监听器， 或覆写一些监听器的行为
+        // 这里确保组件配合 `v-model` 的工作
+        input(event) {
+          vm.$emit('input', event.target.value);
+        }
+      };
+    }
+  }
+};
+</script>
+```
+
+使用的时候
+
+```html
+<template>
+  <div>
+    <Test @input="change" v-model="value" label="测试"></Test>
+  </div>
+</template>
+
+<script>
+import Test from './test';
+export default {
+  data() {
+    return {
+      value: '测试值'
+    };
+  },
+  methods: {
+      // 这里change就可以监听到子组件input的变化
+    change(value) {
+      console.log('value', value);
+    }
+  },
+  components: { Test }
+};
+</script>
+```
+
+### 1.4.3 .sync 修饰符
+
+先来完成一个小功能：通过父组件按钮将子组件显示出来，在子组当中增加一个按钮，通过该按钮来将自已隐藏起来！
+
+```html
+<template>
+  <div>
+    <button @click="isShow=true">点我显示子组件</button>
+    <Test @hidden="(bool)=>isShow=bool" v-show="isShow"></Test>
+  </div>
+</template>
+
+<script>
+import Test from './test';
+export default {
+  data() {
+    return {
+      isShow: false
+    };
+  },
+  methods: {},
+  components: { Test }
+};
+</script>
+```
+
+```html
+<template>
+  <div class="box">
+    <button @click="$emit('hidden',false)">点我隐藏自己</button>
+  </div>
+</template>
+
+<script>
+export default {};
+</script>
+<style >
+.box {
+  height: 300px;
+  background: green;
+}
+</style>
+```
+
+注意：
+
+```html
+<Test @hidden="(bool)=>isShow=bool" v-show="isShow"></Test>
+<--等价于-->
+<Test @update:isShow="(bool)=>isShow=bool" v-show="isShow"></Test>
+<--等价于，使用.sync将组件绑定修改为-->
+<Test :isShow.sync="isShow" v-show="isShow"></Test>
+```
+
+子组件修改为
+
+```html
+<button @click="$emit('update:isShow',false)">点我隐藏自己</button>
 ```
 
 
