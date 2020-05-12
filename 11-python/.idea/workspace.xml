@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="548ab975-efc9-4fb3-a3ec-24830bd1fbc8" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../01-HTML-CSS/HTML和CSS基础.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../01-HTML-CSS/HTTP协议.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../01-HTML-CSS/less.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../02-JavaScript/01-JavaScript/01-JavaScript.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../02-JavaScript/01-JavaScript/01-JavaScript基础.md" beforeDir="false" afterPath="$PROJECT_DIR$/../02-JavaScript/01-JavaScript/01-JavaScript基础.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../02-JavaScript/01-JavaScript/其他知识点.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../02-JavaScript/03-面向对象/assets/01-原型链.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../02-JavaScript/03-面向对象/assets/02-继承原型链.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../02-JavaScript/03-面向对象/面向对象.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../03-HTML5-CSS3/CSS3.md" beforeDir="false" afterPath="$PROJECT_DIR$/../03-HTML5-CSS3/CSS3.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../03-HTML5-CSS3/HTML5.md" beforeDir="false" afterPath="$PROJECT_DIR$/../03-HTML5-CSS3/HTML5.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../04-ES6/ECMAScript6.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../05-Node/Node.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/01-Vue基础.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/02-Vue动画.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/03-Vue组件.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/04-Vue路由.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/05-webpack部分.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/06-项目上传仓库.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/07-Vue进阶.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/08-vue小问题汇集.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/assets/1537364747207.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/assets/1537367050846.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/assets/1537367224834.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/assets/1537413624477.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/assets/1537426665200.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/assets/1537426743888.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/assets/1537427080473.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/assets/1537427257624.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/assets/1537427362114.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/assets/1537427826854.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/assets/1537427850848.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/assets/1537519971996.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/assets/lifecycle.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../06-vue/assets/动画.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../07-React/React-cli.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../07-React/React.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../07-React/oxManApp.md" beforeDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="784675555">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.2" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="2085" />
+    <option name="y" value="552" />
+    <option name="width" value="1400" />
+    <option name="height" value="1000" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="548ab975-efc9-4fb3-a3ec-24830bd1fbc8" name="Default Changelist" comment="" />
+      <created>1575557939480</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1575557939480</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="2085" y="552" width="1400" height="1000" extended-state="0" />
+    <layout>
+      <window_info id="Favorites" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2496329" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Python Console" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+</project>
