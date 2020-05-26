@@ -1,5 +1,7 @@
 
 
+# 一、基础
+
 
 
 - `后端路由`：对于普通的网站，所有的超链接都是URL地址，所有的URL地址都对应服务器上对应的资源；
@@ -977,7 +979,9 @@ const router = new VueRouter({
 
   
 
-## 2.1 导航守卫（路由钩子函数）
+# 二、进阶
+
+## 1.1 导航守卫（路由钩子函数）
 
 - 正如其名，`vue-router` 提供的导航守卫主要用来通过跳转或取消的方式守卫导航。有多种机会植入路由导航过程中：全局的, 单个路由独享的, 或者组件级的。
 - 记住**参数或查询的改变并不会触发进入/离开的导航守卫**。你可以通过[观察 `$route` 对象](https://router.vuejs.org/zh/guide/essentials/dynamic-matching.html#%E5%93%8D%E5%BA%94%E8%B7%AF%E7%94%B1%E5%8F%82%E6%95%B0%E7%9A%84%E5%8F%98%E5%8C%96)来应对这些变化，或使用 `beforeRouteUpdate` 的组件内守卫。
@@ -985,36 +989,40 @@ const router = new VueRouter({
 - 执行钩子函数的 位置
 
   > - router 全局
-  > - 单个路由
+  > - 单个路由中
   > - 组件中
 
 - 钩子函数
 
-  > - router 实例上：beforeEach、beforeResolve 、afterEach	(只要切换导航钩子函数就会立即触发)
+  > - router 实例上：beforeEach、beforeResolve 、afterEach	(只要切换导航，钩子函数就会立即触发)
   > - 单个路由中：beforeEnter
   > - 组件内的钩子：beforeRouteEnter、beforeRouteUpdate、beforeRouteLeave
 
+### 1.1.1 全局守卫
 
+#### 1. beforeEach
 
-### 2.1.1 全局前置守卫（beforeEach）
+- 全局前置守卫
 
 - 你可以使用 `router.beforeEach` 注册一个全局前置守卫，当一个导航`触发`时，全局前置守卫按照创建顺序调用。守卫是异步解析执行，此时导航在所有守卫 resolve 完之前一直处于 **等待中**。
 
 - 进入导航的时候执行，参数有三个：
 
-  > 1. **to: Route**: 即将要进入的目标 [路由对象](https://router.vuejs.org/zh/api/#%E8%B7%AF%E7%94%B1%E5%AF%B9%E8%B1%A1)
-  > 2. **from: Route**: 当前导航正要离开的路由
-  > 3. **next: Function**: 一定要调用该方法来 **resolve** 这个钩子。执行效果依赖 `next` 方法的调用参数。
-  >    - **next()**: 进行管道中的下一个钩子。如果全部钩子执行完了，则导航的状态就是 **confirmed** (确认的)。
-  >    - **next(false)**: 中断当前的导航。如果浏览器的 URL 改变了 (可能是用户手动或者浏览器后退按钮)，那么 URL 地址会重置到 `from` 路由对应的地址。
-  >    - **next('/') 或者 next({ path: '/' })**: 跳转到一个不同的地址。当前的导航被中断，然后进行一个新的导航。你可以向 `next` 传递任意位置对象，且允许设置诸如 `replace: true`、`name: 'home'` 之类的选项以及任何用在 [`router-link` 的 `to` prop](https://router.vuejs.org/zh/api/#to) 或 [`router.push`](https://router.vuejs.org/zh/api/#router-push) 中的选项。
-  >    - **next(error)**: (2.4.0+) 如果传入 `next` 的参数是一个 `Error` 实例，则导航会被终止且该错误会被传递给 [`router.onError()`](https://router.vuejs.org/zh/api/#router-onerror) 注册过的回调。
-  
+  > **to: Route**: 即将要进入的目标 [路由对象](https://router.vuejs.org/zh/api/#%E8%B7%AF%E7%94%B1%E5%AF%B9%E8%B1%A1)
+  >
+  > **from: Route**: 当前导航正要离开的路由
+  >
+  > **next: Function**: 一定要调用该方法来 **resolve** 这个钩子。执行效果依赖 `next` 方法的调用参数。
+  >
+  > - **next()**: 进行管道中的下一个钩子。如果全部钩子执行完了，则导航的状态就是 **confirmed** (确认的)。
+  > - **next(false)**: 中断当前的导航。如果浏览器的 URL 改变了 (可能是用户手动或者浏览器后退按钮)，那么 URL 地址会重置到 `from` 路由对应的地址。
+  > - **next('/') 或者 next({ path: '/' })**: 跳转到一个不同的地址。当前的导航被中断，然后进行一个新的导航。你可以向 `next` 传递任意位置对象，且允许设置诸如 `replace: true`、`name: 'home'` 之类的选项以及任何用在 [`router-link` 的 `to` prop](https://router.vuejs.org/zh/api/#to) 或 [`router.push`](https://router.vuejs.org/zh/api/#router-push) 中的选项。
+  > - **next(error)**: (2.4.0+) 如果传入 `next` 的参数是一个 `Error` 实例，则导航会被终止且该错误会被传递给 [`router.onError()`](https://router.vuejs.org/zh/api/#router-onerror) 注册过的回调。
+
   ```js
   import Vue from 'vue';
   import Router from 'vue-router';
   import Home from '@/container/home/home.component.vue';
-  import About from '@/container/about/about.component.vue';
   import Document from '@/container/document/document.component.vue';
   
   Vue.use(Router);
@@ -1032,11 +1040,7 @@ const router = new VueRouter({
               path: '/document',
               name: 'document',
               component: Document
-          }, {
-              path: '/about',
-              component: About
           }
-  
       ]
   })
   router.beforeEach((to, from, next) => {
@@ -1045,16 +1049,20 @@ const router = new VueRouter({
   })
   export default router;
   ```
-  
+
   > 注意：确保要调用 next 方法，否则钩子就不会被 resolved。
 
-### 2.1.2 全局解析守卫（beforeResolve）
+#### 2. beforeResolve
+
+- 全局解析守卫
 
 - 在 2.5.0+ 你可以用 `router.beforeResolve` 注册一个全局守卫。这和 `router.beforeEach` 类似，区别是在导航被确认之前，**同时在所有组件内守卫和异步路由组件被解析之后**，解析守卫就被调用。
 
 
 
-### 2.1.3 全局后置钩子（afterEach）
+#### 3. afterEach
+
+- 全局后置钩子
 
 - 进入导航后，同样的有参数 to 和 from，但是就不存在next了
 
@@ -1070,25 +1078,33 @@ const router = new VueRouter({
   })
   ```
 
-  
+### 1.1.2 路由独享守卫
 
-### 2.1.4 路由独享的守卫（beforeEnter）
+#### beforeEnter
 
-- 进入路由时执行，同样的有 to from next 三个参数。注意：没有afterEnter
+- 你可以在路由配置上直接定义 `beforeEnter` 守卫，进入路由时执行，同样的有 to from next 三个参数。注意：没有afterEnter
 
-  ```
-  router.beforeEnter((to, from,next) => {
-      next();
+  ```js
+  const router = new VueRouter({
+    routes: [
+      {
+        path: '/foo',
+      component: Foo,
+        beforeEnter: (to, from, next) => {
+          // ...
+        }
+      }
+    ]
   })
   ```
 
-  
+> 执行顺序：beforeEach( next() )-->beforeEnter( next() )-->afterEach
 
-### 2.1.5 组件内的守卫
+### 1.1.3  组件内的守卫
 
-#### beforeRouteEnter
+#### 1. beforeRouteEnter
 
-- 进入组件时触发，注意：此时vm实例还没有创建，this为undefined，同样的也就拿不到 data 里面的数据。但是，在 next 里面参数为一个回调函数，回调函数的参数为 vm 实例。
+- 进入组件时触发，注意：此时`vm`实例还没有创建，`this`为`undefined`，同样的也就拿不到 `data` 里面的数据。但是，在 `next `里面参数为一个回调函数，回调函数的参数为 vm 实例。
 
   ```js
   data (){
@@ -1105,9 +1121,9 @@ const router = new VueRouter({
 
   
 
-#### beforeRouteUpdate
+#### 2. beforeRouteUpdate
 
-- 在当前路由改变，但是该组件被复用时调用，同样的接受三个参数。
+- 在当前路由改变，但是该组件被复用时调用（如动态路由），同样的接受三个参数。
 
   ```js
   beforeRouteUpdate(to, from, next){
@@ -1117,7 +1133,7 @@ const router = new VueRouter({
 
   
 
-#### beforeRouteLeave
+#### 3. beforeRouteLeave
 
 - 离开组件时触发，同样接受三个参数。
 
@@ -1140,7 +1156,7 @@ const router = new VueRouter({
 
 
 
-### 2.1.6 完整的导航解析流程
+#### 1.1.4 完整的导航解析流程
 
 > ==> 导航被触发。
 >
@@ -1166,9 +1182,13 @@ const router = new VueRouter({
 >
 > ==> 用创建好的实例调用 `beforeRouteEnter` 守卫中传给 `next` 的回调函数。
 
-- 
+钩子函数执行顺序：
 
-## 2.3 路由元信息 meta
+> beforeEach --> beforeRouteUpdate --> beforeEnter --> beforeRouteEnter --> 
+>
+> beforeResolve --> afterEach --> beforeRouteLeave --> beforeEach
+
+## 1.2 路由元信息 meta
 
 - 定义路由的时候可以配置 `meta` 字段：
 
@@ -1194,78 +1214,79 @@ const router = new VueRouter({
 - 那么如何访问这个 `meta` 字段呢？
 - 首先，我们称呼 `routes` 配置中的每个路由对象为 **路由记录**。路由记录可以是嵌套的，因此，当一个路由匹配成功后，他可能匹配多个路由记录
 - 例如，根据上面的路由配置，`/foo/bar` 这个 URL 将会匹配父路由记录以及子路由记录。
-- 一个路由匹配到的所有路由记录会暴露为 `$route` 对象 (还有在导航守卫中的路由对象) 的 `$route.matched` 数组。因此，我们需要遍历 `$route.matched` 来检查路由记录中的 `meta` 字段。
+- 一个路由匹配到的所有路由记录会暴露为 `$route` 对象 (还有在导航守卫中的路由对象) 的 `$route.meta` 属性。
 
-![1552809270994](https://xiaodingyang-1300707163.cos.ap-chengdu.myqcloud.com/Markdown/1557750283215.png)
-
-- 下面例子展示在全局导航守卫中检查元字段：
+- 
 
 ```js
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    // this route requires auth, check if logged in
-    // if not, redirect to login page.
-    if (!auth.loggedIn()) {
-      next({
-        path: '/login',
-        query: { redirect: to.fullPath }
-      })
-    } else {
-      next()
-    }
-  } else {
-    next() // 确保一定要调用 next()
-  }
-})
-```
-
-- 直接在路由配置的时候，给每个路由添加一个自定义的meta对象，在meta对象中可以设置一些状态，来进行一些操作。用它来做登录校验再合适不过了
-
-```js
-{
-  path: '/actile',
-  name: 'Actile',
-  component: Actile,
-  meta: {
-    login_require: false
-  },
-},
-{
-  path: '/goodslist',
-  name: 'goodslist',
-  component: Goodslist,
-  meta: {
-    login_require: true
-  },
-  children:[
-    {
-      path: 'online',
-      component: GoodslistOnline
-    }
-  ]
-}
-```
-
-- 这里我们只需要判断item下面的meta对象中的login_require是不是true，就可以做一些限制了
-
-```js
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(function (item) {
-    return item.meta.login_require
-  })) {
-    next('/login')
-  } else 
-    next()
+	console.log('meta',to.meta)
 })
 ```
 
 > 在组件中可以使用 `this.$route.meta`访问
 
+## 1.3 过渡动效
+
+`` 是基本的动态组件，所以我们可以用 `` 组件给它添加一些过渡效果：
+
+```html
+<transition>
+  <router-view></router-view>
+</transition>
+```
+
+[Transition 的所有功能](https://cn.vuejs.org/guide/transitions.html) 在这里同样适用。
+
+### 1.3.1 单个路由的过渡
+
+上面的用法会给所有路由设置一样的过渡效果，如果你想让每个路由组件有各自的过渡效果，可以在各路由组件内使用 `transition` 并设置不同的 name。
+
+```js
+const Foo = {
+  template: `
+    <transition name="slide">
+      <div class="foo">...</div>
+    </transition>
+  `
+}
+
+const Bar = {
+  template: `
+    <transition name="fade">
+      <div class="bar">...</div>
+    </transition>
+  `
+}
+```
+
+### 1.3.2 基于路由的动态过渡
+
+还可以基于当前路由与目标路由的变化关系，动态设置过渡效果：
+
+```html
+<!-- 使用动态的 transition name -->
+<transition :name="transitionName">
+  <router-view></router-view>
+</transition>
+```
+
+```js
+// 接着在父组件内 watch $route 决定使用哪种过渡
+watch: {
+    '$route' (to, from) {
+        const toDepth = to.path.split('/').length
+        const fromDepth = from.path.split('/').length
+        this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+    }
+}
+```
 
 
-## 2.6 滚动行为
 
-### 2.6.1 基本
+## 1.4 滚动行为
+
+### 1.4.1 基本
 
 - 使用前端路由，当切换到新路由时，想要页面滚到顶部，或者是保持原先的滚动位置，就像重新加载页面那样。 `vue-router` 能做到，而且更好，它让你可以自定义路由切换时页面如何滚动。
 
@@ -1325,7 +1346,7 @@ router.beforeEach((to, from, next) => {
 
 - 我们还可以利用[路由元信息](https://router.vuejs.org/zh/guide/advanced/meta.html)更细颗粒度地控制滚动。查看完整例子请[移步这里](https://github.com/vuejs/vue-router/blob/dev/examples/scroll-behavior/app.js)。
 
-### 2.6.2 异步滚动
+### 1.4.2 异步滚动
 
 - 你也可以返回一个 Promise 来得出预期的位置描述：
 
@@ -1343,9 +1364,9 @@ router.beforeEach((to, from, next) => {
 
 
 
-## 2.7 路由懒加载
+## 1.5 路由懒加载
 
-### 2.7.1 基本
+### 1.5.1 基本
 
 - 当打包构建应用时，Javascript 包会变得非常大，影响页面加载。如果我们能把不同路由对应的组件分割成不同的代码块，然后当路由被访问的时候才加载对应组件，这样就更加高效了。
 
@@ -1386,35 +1407,30 @@ router.beforeEach((to, from, next) => {
   ```js
   import Vue from 'vue';
   import Router from 'vue-router';
-  const Home = () => import("container/home/home");
-  const Test = () => import("test/test");
-  const About = () => import("container/about/about");
   
   Vue.use(Router)
-  let router = new Router({
+  const router = new Router({
       mode: 'history',
       routes: [
-          { path: '/', name: 'home', component: Home },
-          {
-              path: '/index/test',
-              name: 'test',
-              component: Test
+          { 
+              path: '/', 
+              name: 'home', 
+              component: () => import("container/home/home") 			
           },
           {
               path: '/index/about',
               name: 'about',
-              component: About
+              component: () => import("container/about/about")
           },
-  
-      ],
+      ]
   })
   
   export default router
   ```
-
+  
   
 
-### 2.7.2 把组件按组分块
+### 1.5.2 把组件按组分块
 
 - 有时候我们想把某个路由下的所有组件都打包在同个异步块 (chunk) 中。只需要使用 [命名 chunk](https://webpack.js.org/guides/code-splitting-require/#chunkname)，一个特殊的注释语法来提供 chunk name (需要 Webpack > 2.4)。
 
@@ -1427,124 +1443,3 @@ const Baz = () => import(/* webpackChunkName: "group-foo" */ './Baz.vue')
 - Webpack 会将任何一个异步模块与相同的块名称组合到相同的异步块中。
 
 
-
-## 2.8 HTML5 History 模式
-
-- `vue-router` 默认 hash 模式 —— 使用 URL 的 hash 来模拟一个完整的 URL，于是当 URL 改变时，页面不会重新加载。
-- 如果不想要很丑的 hash，我们可以用路由的 **history 模式**，这种模式充分利用 `history.pushState` API 来完成 URL 跳转而无须重新加载页面。
-
-```js
-const router = new VueRouter({
-  mode: 'history',
-  routes: [...]
-})
-```
-
-- 当你使用 history 模式时，URL 就像正常的 url，例如 http://yoursite.com/user/id，也好看！
-- 不过这种模式要玩好，还需要后台配置支持。因为我们的应用是个单页客户端应用，如果后台没有正确的配置，当用户在浏览器直接访问 http://oursite.com/user/id 就会返回 404，这就不好看了。
-- 所以呢，你要在服务端增加一个覆盖所有情况的候选资源：如果 URL 匹配不到任何静态资源，则应该返回同一个 index.html 页面，这个页面就是你 app 依赖的页面。
-
-### 2.8.1 后端配置例子
-
-#### 2.8.1.1 Apache
-
-```text
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
-  RewriteRule ^index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
-</IfModule>
-```
-
-- 除了 `mod_rewrite`，你也可以使用 [`FallbackResource`](https://httpd.apache.org/docs/2.2/mod/mod_dir.html#fallbackresource)。
-
-#### 2.8.1.2 nginx
-
-```nginx
-location / {
-  try_files $uri $uri/ /index.html;
-}
-```
-
-#### 2.8.1.3 原生 Node.js
-
-```js
-const http = require('http')
-const fs = require('fs')
-const httpPort = 80
-
-http.createServer((req, res) => {
-  fs.readFile('index.htm', 'utf-8', (err, content) => {
-    if (err) {
-      console.log('We cannot open "index.htm" file.')
-    }
-
-    res.writeHead(200, {
-      'Content-Type': 'text/html; charset=utf-8'
-    })
-
-    res.end(content)
-  })
-}).listen(httpPort, () => {
-  console.log('Server listening on: http://localhost:%s', httpPort)
-})
-```
-
-#### 2.8.1.4 基于 Node.js 的 Express
-
-- 对于 Node.js/Express，请考虑使用 [connect-history-api-fallback 中间件](https://github.com/bripkens/connect-history-api-fallback)。
-
-#### 2.8.1.5 Internet Information Services (IIS)
-
-1. 安装 [IIS UrlRewrite](https://www.iis.net/downloads/microsoft/url-rewrite)
-2. 在你的网站根目录中创建一个 `web.config` 文件，内容如下：
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-  <system.webServer>
-    <rewrite>
-      <rules>
-        <rule name="Handle History Mode and custom 404/500" stopProcessing="true">
-          <match url="(.*)" />
-          <conditions logicalGrouping="MatchAll">
-            <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
-            <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
-          </conditions>
-          <action type="Rewrite" url="/" />
-        </rule>
-      </rules>
-    </rewrite>
-  </system.webServer>
-</configuration>
-```
-
-#### 2.8.1.6 Caddy
-
-```text
-rewrite {
-    regexp .*
-    to {path} /
-}
-```
-
-#### 2.8.1.7 Firebase 主机
-
-- 在你的 `firebase.json` 中加入：
-
-```js
-{
-  "hosting": {
-    "public": "dist",
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  }
-}
-```
