@@ -1,7 +1,3 @@
-`
-
-
-
 ## 一、Vue初步
 
 ## 1.1 Vue简单认识
@@ -10,141 +6,7 @@
 - `vue.js`、`Angular.js`、`React.js`并称前端三大主流框架！
 - Vue.js是一套构建用户界面的框架，只关注视图层，不仅易于上手，还便于第三方库或既有项目整合。（Vue有配套的第三方类库，可以整合起来做大型项目的开发）
 - 前端的主要工作？主要负责`MVC`中的`V`这一层；主要工作就是和界面打交道，来制作前端页面效果；
-
-### 1.1.1 对比React
-
-- React 和 Vue 有许多相似之处，它们都有：
-
-  > - 使用 Virtual DOM
-  > - 提供了响应式 (Reactive) 和组件化 (Composable) 的视图组件。
-  > - 将注意力集中保持在核心库，而将其他功能如路由和全局状态管理交给相关的库。
-
-- 由于有着众多的相似处，我们会用更多的时间在这一块进行比较。这里我们不只保证技术内容的准确性，同时也兼顾了平衡的考量。我们需要承认 React 比 Vue 更好的地方，比如更丰富的生态系统。
-
-#### 1.1.1.1  运行时性能
-
-- React 和 Vue 都是非常快的，所以速度并不是在它们之中做选择的决定性因素。对于具体的数据表现，可以移步这个[第三方 benchmark](https://stefankrause.net/js-frameworks-benchmark8/table.html)，它专注于渲染/更新非常简单的组件树的真实性能。
-
-#### 1.1.1.2 优化
-
-- 在 React 应用中，当某个组件的状态发生变化时，它会以该组件为根，重新渲染整个组件子树。
-
-- 如要避免不必要的子组件的重渲染，你需要在所有可能的地方使用 `PureComponent`，或是手动实现 `shouldComponentUpdate` 方法。同时你可能会需要使用不可变的数据结构来使得你的组件更容易被优化。
-
-- 然而，使用 `PureComponent` 和 `shouldComponentUpdate` 时，需要保证该组件的整个子树的渲染输出都是由该组件的 props 所决定的。如果不符合这个情况，那么此类优化就会导致难以察觉的渲染结果不一致。这使得 React 中的组件优化伴随着相当的心智负担。
-
-- 在 Vue 应用中，组件的依赖是在渲染过程中自动追踪的，所以系统能精确知晓哪个组件确实需要被重渲染。你可以理解为每一个组件都已经自动获得了 `shouldComponentUpdate`，并且没有上述的子树问题限制。
-
-- Vue 的这个特点使得开发者不再需要考虑此类优化，从而能够更好地专注于应用本身。
-
-#### 1.1.1.3 HTML
-
-- 在 React 中，一切都是 JavaScript。不仅仅是 HTML 可以用 JSX 来表达，现在的潮流也越来越多地将 CSS 也纳入到 JavaScript 中来处理。这类方案有其优点，但也存在一些不是每个开发者都能接受的取舍。
-
-- Vue 的整体思想是拥抱经典的 Web 技术，并在其上进行扩展。我们下面会详细分析一下。
-
-- 在 React 中，所有的组件的渲染功能都依靠 JSX。JSX 是使用 XML 语法编写 JavaScript 的一种语法糖。
-
-- 使用 JSX 的渲染函数有下面这些优势：
-
-  > - 你可以使用完整的编程语言 JavaScript 功能来构建你的视图页面。比如你可以使用临时变量、JS 自带的流程控制、以及直接引用当前 JS 作用域中的值等等。
-  > - 开发工具对 JSX 的支持相比于现有可用的其他 Vue 模板还是比较先进的 (比如，linting、类型检查、编辑器的自动完成)。
-
-- 事实上 Vue 也提供了[渲染函数](https://cn.vuejs.org/v2/guide/render-function.html)，甚至[支持 JSX](https://cn.vuejs.org/v2/guide/render-function.html#JSX)。然而，我们默认推荐的还是模板。任何合乎规范的 HTML 都是合法的 Vue 模板，这也带来了一些特有的优势：
-
-  > - 对于很多习惯了 HTML 的开发者来说，模板比起 JSX 读写起来更自然。这里当然有主观偏好的成分，但如果这种区别会导致开发效率的提升，那么它就有客观的价值存在。
-  > - 基于 HTML 的模板使得将已有的应用逐步迁移到 Vue 更为容易。
-  > - 这也使得设计师和新人开发者更容易理解和参与到项目中。
-  > - 你甚至可以使用其他模板预处理器，比如 Pug 来书写 Vue 的模板。
-
-- 有些开发者认为模板意味着需要学习额外的 DSL (Domain-Specific Language 领域特定语言) 才能进行开发——我们认为这种区别是比较肤浅的。首先，JSX 并不是没有学习成本的——它是基于 JS 之上的一套额外语法。同时，正如同熟悉 JS 的人学习 JSX 会很容易一样，熟悉 HTML 的人学习 Vue 的模板语法也是很容易的。最后，DSL 的存在使得我们可以让开发者用更少的代码做更多的事，比如 `v-on` 的各种修饰符，在 JSX 中实现对应的功能会需要多得多的代码。
-
-- 更抽象一点来看，我们可以把组件区分为两类：一类是偏视图表现的 (presentational)，一类则是偏逻辑的 (logical)。我们推荐在前者中使用模板，在后者中使用 JSX 或渲染函数。这两类组件的比例会根据应用类型的不同有所变化，但整体来说我们发现表现类的组件远远多于逻辑类组件。
-
-#### 1.1.1.4 CSS
-
-- 除非你把组件分布在多个文件上 (例如 [CSS Modules](https://github.com/gajus/react-css-modules))，CSS 作用域在 React 中是通过 CSS-in-JS 的方案实现的 (比如 [styled-components](https://github.com/styled-components/styled-components)、[glamorous](https://github.com/paypal/glamorous) 和 [emotion](https://github.com/emotion-js/emotion))。这引入了一个新的面向组件的样式范例，它和普通的 CSS 撰写过程是有区别的。另外，虽然在构建时将 CSS 提取到一个单独的样式表是支持的，但 bundle 里通常还是需要一个运行时程序来让这些样式生效。当你能够利用 JavaScript 灵活处理样式的同时，也需要权衡 bundle 的尺寸和运行时的开销。
-
-- 如果你是一个 CSS-in-JS 的爱好者，许多主流的 CSS-in-JS 库也都支持 Vue (比如 [styled-components-vue](https://github.com/styled-components/vue-styled-components) 和 [vue-emotion](https://github.com/egoist/vue-emotion))。这里 React 和 Vue 主要的区别是，Vue 设置样式的默认方法是[单文件组件](https://cn.vuejs.org/v2/guide/single-file-components.html)里类似 `style` 的标签。
-
-- [单文件组件](https://cn.vuejs.org/v2/guide/single-file-components.html)让你可以在同一个文件里完全控制 CSS，将其作为组件代码的一部分。
-
-```html
-<style scoped>
-  @media (min-width: 250px) {
-    .list-container:hover {
-      background: orange;
-    }
-  }
-</style>
-```
-
-- 这个可选 `scoped` 属性会自动添加一个唯一的属性 (比如 `data-v-21e5b78`) 为组件内 CSS 指定作用域，编译的时候 `.list-container:hover` 会被编译成类似 `.list-container[data-v-21e5b78]:hover`。
-
-- 最后，Vue 的单文件组件里的样式设置是非常灵活的。通过 [vue-loader](https://github.com/vuejs/vue-loader)，你可以使用任意预处理器、后处理器，甚至深度集成 [CSS Modules](https://vue-loader.vuejs.org/en/features/css-modules.html)——全部都在 `<style>` 标签内。
-
-#### 1.1.1.5 向上扩展
-
-- Vue 和 React 都提供了强大的路由来应对大型应用。React 社区在状态管理方面非常有创新精神 (比如 Flux、Redux)，而这些状态管理模式甚至 [Redux 本身](https://yarnpkg.com/en/packages?q=redux vue&p=1)也可以非常容易的集成在 Vue 应用中。实际上，Vue 更进一步地采用了这种模式 ([Vuex](https://github.com/vuejs/vuex))，更加深入集成 Vue 的状态管理解决方案 Vuex 相信能为你带来更好的开发体验。
-
-- 两者另一个重要差异是，Vue 的路由库和状态管理库都是由官方维护支持且与核心库同步更新的。React 则是选择把这些问题交给社区维护，因此创建了一个更分散的生态系统。但相对的，React 的生态系统相比 Vue 更加繁荣。
-
-- 最后，Vue 提供了 [Vue-cli 脚手架](https://github.com/vuejs/vue-cli)，能让你非常容易地构建项目，包含了 [Webpack](https://github.com/vuejs-templates/webpack)，[Browserify](https://github.com/vuejs-templates/browserify)，甚至 [no build system](https://github.com/vuejs-templates/simple)。React 在这方面也提供了 [create-react-app](https://github.com/facebookincubator/create-react-app)，但是现在还存在一些局限性：
-
-  > - 它不允许在项目生成时进行任何配置，而 Vue 支持 [Yeoman](http://yeoman.io/)-like 定制。
-  > - 它只提供一个构建单页面应用的单一模板，而 Vue 提供了各种用途的模板。
-  > - 它不能用用户自建的模板构建项目，而自建模板对企业环境下预先建立协议是特别有用的。
-
-- 而要注意的是这些限制是故意设计的，这有它的优势。例如，如果你的项目需求非常简单，你就不需要自定义生成过程。你能把它作为一个依赖来更新。如果阅读更多关于[不同的设计理念](https://github.com/facebookincubator/create-react-app#philosophy)。
-
-#### 1.1.1.6 向下扩展
-
-- React 学习曲线陡峭，在你开始学 React 前，你需要知道 JSX 和 ES2015，因为许多示例用的是这些语法。你需要学习构建系统，虽然你在技术上可以用 Babel 来实时编译代码，但是这并不推荐用于生产环境。
-
-- 就像 Vue 向上扩展好比 React 一样，Vue 向下扩展后就类似于 jQuery。你只要把如下标签放到页面就可以运行：
-
-  ```html
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-  ```
-
-- 然后你就可以编写 Vue 代码并应用到生产中，你只要用 min 版 Vue 文件替换掉就不用担心其他的性能问题。
-
-- 由于起步阶段不需学 JSX，ES2015 以及构建系统，所以开发者只需不到一天的时间阅读[指南](https://cn.vuejs.org/v2/guide/)就可以建立简单的应用程序。
-
-#### 1.1.1.7 总结
-
-> - `性能方面`：React 和 Vue 都是非常快的，所以速度并不是在它们之中做选择的决定性因素
-> - `优化方面`：React在不需要更新子组件需要，使用 `PureComponent` 和 `shouldComponentUpdate`，而 Vue 组件的依赖是在渲染过程中自动追踪的
-> - `HTML方面`：React 使用 JSX，虽然 Vue 也可以使用 JSX，但是还是推荐使用默认模板
-> - `CSS方面`：React 必须 使用插件才能实现 模块化的css，如`style-component`。而 Vue 可以自选，如 `scoped`
-> - `向上扩展`：React 的状态管理是 Redux，独立于 React。而 Vue 则参考Redux设计了自己的状态管理工具 Vuex。
-> - `向下扩展`：React 学习较难，Vue较为简单。可以直接引入CDN包就可以编码。
-
-### 1.1.2 Vue 安装
-
 - `兼容性`：Vue 不支持 IE8 及以下版本，因为 Vue 使用了 IE8 无法模拟的 ECMAScript 5 特性。但它支持所有兼容ECMAScript 5 的浏览器。
-
-#### 1.1.2.1 本地导入
-
-- 直接下载并用 `<script>`标签引入，Vue 会被注册为一个全局变量。Vue 有开发和生产两个版本，在开发环境下不要使用压缩版本，不然你就失去了所有常见错误相关的警告!
-
-#### 1.1.2.2 CDN引入
-
-- 我们推荐链接到一个你可以手动更新的指定版本号：
-
-```js
-<script src="https://cdn.jsdelivr.net/npm/vue@1.6.16/dist/vue.js"></script>
-```
-
-- 你可以在 `cdn.jsdelivr.net/npm/vue` 浏览 NPM 包的源代码。
-
-#### 1.1.2.3 npm 安装
-
-```shell
-npm i vue
-```
-
-
 
 ## 1.2 Vue 的 MVVM对应关系
 
@@ -1519,72 +1381,6 @@ export default {
 > 	2. 子组件通过点击触发 调用`emit`函数，并将子组件数据以参数形式传递给父组件
 >  	4. 父组件将拿到的数据复制到自己的 data 数据中。
 
-
-
-### 1.4.5 refs
-
-- `ref`获取`DOM`元素和组件的引用，同时获取子组件的`方法和值。`
-
-- `ref`  是 英文单词 【`reference`】引用类型 。
-
-```html
-<h3 id="myh3" ref="myh3">哈哈哈， 今天天气太好了！！！</h3>
-```
-
-- 想要获取h3的DOM元素，可以通过ref。在vm的属性中有`$refs`这么一个属性，里面存着所有的`ref`值。
-
-```js
-this.$refs.myh3
-```
-
-- 除了可以引用标签元素以外，还可以引用组件。
-
-```html
-<login ref="mylogin"></login>
-```
-
-```js
-this.$refs.mylogin
-```
-
-- 通过ref还可以父组件调用子组件的方法，获取子组件的数据。
-
-```html
-<login ref="mylogin"></login>
-```
-- 子组件
-```js
-var login = {
-  template: '<h1>登录组件</h1>',
-  data() {
-    return {
-      msg: 'son msg'
-    }
-  },
-  methods: {
-    show() {
-      console.log('调用了子组件的方法')
-    }
-  }
-}
-```
-- 父组件
-```js
-var vm = new Vue({
-  el: '#app',
-  data: {},
-  methods: {
-    getElement() {
-      console.log(this.$refs.mylogin.msg)
-      this.$refs.mylogin.show()
-    }
-  },
-  components: {
-    login
-  }
-});
-```
-
 ## 1.4 自定义事件
 
 ### 1.4.1 自定义组件的 v-model
@@ -1788,257 +1584,160 @@ export default {};
 <button @click="$emit('update:isShow',false)">点我隐藏自己</button>
 ```
 
+## 1.5 访问元素&组件
 
+### 1.5.1 访问根实例
 
-# 三、filter过滤器
-
-- 概念：Vue.js 允许你自定义过滤器，可被用于一些常见的文本格式化。过滤器可以用在两个地方：**双花括号插值和 v-bind 表达式** (后者从 2.1.0+ 开始支持)。过滤器应该被添加在 JavaScript 表达式的尾部，由“管道”符号指示：
-
-## 1.1 全局过滤器
-
-- 我们都知道，在`new Vue()`的时候，里面有`el`这个属性，就是为了限制Vue控制的一个区域。在区域之外的元素将不被Vue控制，而所谓的全局过滤器，就是所有的VM实例都共享的。书写在全局，语法：
-
-```html
-<!-- 在双花括号中 -->
-<div>{{ message | capitalize }}</div>
-
-<!-- 在 `v-bind` 中 -->
-<div v-bind:id="rawId | formatId"></div>
-```
-
-
-
-### 1.1.1 基本语法
-
-- `参数1`：过滤器的名称
-- `参数2`：一个函数
-- function 中的第一个参数已经被规定死了，永远都是过滤器 `管道符`前面传递过来的数据。之后的参数可以任意传。
-- 你可以在一个组件的选项中定义**本地的过滤器**：
+在每个 `new Vue` 实例的子组件中，其根实例可以通过 `$root` 属性进行访问。例如，在这个根实例中：
 
 ```js
-filters: {
-	过滤器名称: function (过滤信息) {
-	}
-}
-```
-
-- 或者在创建 Vue 实例之前**全局定义过滤器**：
-
-```js
-Vue.filter('过滤器的名称', function(msg,arg1,arg2…){
-	return msg + arg1 + arg2 + …
-})
-```
-- 使用
-```html
-<p>{{ msg | 过滤器的名称 }}</p>
-```
-
-> 注意：在`new Vue()` 实例中。过滤器可以连续的书写多个，过滤器调用的时候，采用的是`就近原则`，如果私有过滤器和全局过滤器名称一致了，这时候优先调用私有过滤器。
-
-#### 1.6.1.2 用法
-
-- 如下：在`data`里面有`msg`变量，我们想要加载到页面以后是被处理过的，也就是将“`单纯`”替换为“`邪恶`”。因此我们需要对原有的`msg`进行处理
-
-```js
-data: {
-   msg: '曾经，我也是一个单纯的少年，单纯的我，傻傻的问，谁是世界上最单纯的男人'
-}
-```
-
-- 定义一个 Vue 全局的过滤器，名字叫做  `msgFormat`，然后用 replace 结合正则表达式进行替换，最后返回替换以后的字符串渲染到页面中。
-
-```js
-Vue.filter('msgFormat', function (msg) {
-   // 字符串的  replace 方法，第一个参数，除了可写一个 字符串之外，还可以定义一个正则
-   return msg.replace(/单纯/g, ‘邪恶’)
-})
-```
-
-- 另外，在管道后面可以继续传参。那么，现在我们想要在管道传参，然后进行替换。
-
-```html
-<p>{{ msg | msgFormat('疯狂', '智障') }}</p>
-```
-
-```js
-Vue.filter('msgFormat', function (msg, arg1, arg2) {
-   return msg.replace(/单纯/g, arg1 + arg2)
-})
-```
-
-- 同时，过滤器可以同时调用多个。
-
-```html
-<p>{{ msg | msgFormat('疯狂', '智障') | test }}</p>
-```
-
-```js
-Vue.filter('test', function (msg) {
-   return msg + '========'
-})
-```
-
-- 结果：
-
-```shell
-曾经，我也是一个疯狂智障的少年，疯狂智障的我，傻傻的问，谁是世界上最疯狂智障的男人========
-```
-
-
-
-# 四、 自定义指令(directive)
-
-- 除了核心功能默认内置的指令 (`v-model` 和 `v-show`)，Vue 也允许注册自定义指令。注意，在 Vue2.0 中，代码复用和抽象的主要形式是组件。然而，有的情况下，你仍然需要对普通 DOM 元素进行底层操作，这时候就会用到自定义指令。举个聚焦输入框的例。
-
-- 当页面加载时，该元素将获得焦点 (注意：autofocus 在移动版 Safari 上不工作)。事实上，只要你在打开这个页面后还没点击过任何内容，这个输入框就应当还是处于聚焦状态。现在让我们用指令来实现这个功能：
-
-- 注册一个全局自定义指令 `v-focus`：
-  - `参数1` ： 指令的名称，注意，在定义的时候，指令的名称前面，不需要加 v- 前缀。 但是，在调用的时候，必须 在指令名称前 加上 v- 前缀来进行调用。
-  - `参数2`： 是一个对象，这个对象身上，有一些指令相关的`钩子函数`，这些函数可以在特定的阶段，执行相关的操作
-
-```js
-Vue.directive('focus', {
-    bind: function () {}, // 只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置，样式相关的操作一般可以在bind中执行。
-    inserted: function () {}, // 被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。和JS行为有关的操作，最好在 inserted 中去执行，否则 JS行为不生效。
-    update: function () {}, // 所在组件的 VNode 更新时调用，但是可能发生在其子 VNode 更新之前。指令的值可能发生了改变，也可能没有。但是你可以通过比较更新前后的值来忽略不必要的模板更新 
-    componentUpdated: function () {}, // 指令所在组件的 VNode 及其子 VNode 全部更新后调用。
-    unbind: function () {} // 只调用一次，指令与元素解绑时调用
-})
-```
-
-
-
-## 1.1 钩子函数的参数
-
-指令钩子函数会被传入以下参数：
-
-- `el`：指令所绑定的元素，可以用来直接操作 DOM。
-
-- `binding`：一个对象，包含以下属性：
-
-  > - `name`：指令名，不包括 `v-` 前缀。
-  > - `value`：指令的绑定值，例如：`v-my-directive="1 + 1"` 中，绑定值为 `2`。
-  > - `oldValue`：指令绑定的前一个值，仅在 `update` 和 `componentUpdated` 钩子中可用。无论值是否改变都可用。
-  > - `expression`：字符串形式的指令表达式。例如 `v-my-directive="1 + 1"` 中，表达式为 `"1 + 1"`。
-  > - `arg`：传给指令的参数，可选。例如 `v-my-directive:foo` 中，参数为 `"foo"`。
-  > - `modifiers`：一个包含修饰符的对象。例如：`v-my-directive.foo.bar` 中，修饰符对象为 `{ foo: true, bar: true }`。
-
-- `vnode`：Vue 编译生成的虚拟节点。移步 [VNode API](https://cn.vuejs.org/v2/api/#VNode-接口) 来了解更多详情。
-
-- `oldVnode`：上一个虚拟节点，仅在 `update` 和 `componentUpdated` 钩子中可用。
-
-- 示例
-
-```html
-<div id="hook-arguments-example" v-demo:foo.a.b="message"></div>
-```
-
-```js
-Vue.directive('demo', {
-  bind: function (el, binding, vnode) {
-    var s = JSON.stringify
-    el.innerHTML =
-      'name: '       + s(binding.name) + '<br>' +
-      'value: '      + s(binding.value) + '<br>' +
-      'expression: ' + s(binding.expression) + '<br>' +
-      'argument: '   + s(binding.arg) + '<br>' +
-      'modifiers: '  + s(binding.modifiers) + '<br>' +
-      'vnode keys: ' + Object.keys(vnode).join(', ')
-  }
-})
-
+// Vue 根实例
 new Vue({
-  el: '#hook-arguments-example',
   data: {
-    message: 'hello!'
+    foo: 1
+  },
+  computed: {
+    bar: function () { /* ... */ }
+  },
+  methods: {
+    baz: function () { /* ... */ }
   }
 })
 ```
 
-- 结果：
-
-  > ![image-20200424161022791](https://xiaodingyang-1300707163.cos.ap-chengdu.myqcloud.com/Markdown/image-20200424161022791.png)
-
-## 1.2 动态指令参数
-
-指令的参数可以是动态的。例如，在 `v-mydirective:[argument]="value"` 中，`argument` 参数可以根据组件实例数据进行更新！这使得自定义指令可以在应用中被灵活使用。
-
-例如你想要创建一个自定义指令，用来通过固定布局将元素固定在页面上。我们可以像这样创建一个通过指令值来更新竖直位置像素值的自定义指令：
-
-```html
-<div id="baseexample">
-  <p>Scroll down the page</p>
-  <p v-pin="200">Stick me 200px from the top of the page</p>
-</div>
-```
+所有的子组件都可以将这个实例作为一个全局 store 来访问或使用。
 
 ```js
-Vue.directive('pin', {
-  bind: function (el, binding, vnode) {
-    el.style.position = 'fixed'
-    el.style.top = binding.value + 'px'
-  }
-})
-
-new Vue({
-  el: '#baseexample'
-})
+this.$root.foo // 获取根组件的数据
+this.$root.foo = 2 // 写入根组件的数据
+this.$root.bar // 访问根组件的计算属性
+this.$root.baz() // 调用根组件的方法
 ```
 
-这会把该元素固定在距离页面顶部 200 像素的位置。但如果场景是我们需要把元素固定在左侧而不是顶部又该怎么办呢？这时使用动态参数就可以非常方便地根据每个组件实例来进行更新。
+> 对于 demo 或非常小型的有少量组件的应用来说这是很方便的。不过这个模式扩展到中大型应用来说就不然了。因此在绝大多数情况下，我们强烈推荐使用 [Vuex](https://github.com/vuejs/vuex) 来管理应用的状态。
 
-```html
-<div id="dynamicexample">
-  <h3>Scroll down inside this section ↓</h3>
-  <p v-pin:[direction]="200">I am pinned onto the page at 200px to the left.</p>
-</div>
-```
+### 1.5.2 访问父级组件实例
+
+和 `$root` 类似，`$parent` property 可以用来从一个子组件访问父组件的实例。它提供了一种机会，可以在后期随时触达父级组件，以替代将数据以 prop 的方式传入子组件的方式。
+
+但是很多时候你可能有很多个层级，那么你可能发现自己需要一些类似这样的 hack：
 
 ```js
-Vue.directive('pin', {
-  bind: function (el, binding, vnode) {
-    el.style.position = 'fixed'
-    var s = (binding.arg == 'left' ? 'left' : 'top')
-    el.style[s] = binding.value + 'px'
-  }
-})
+var map = this.$parent || this.$parent.$parent
+```
 
-new Vue({
-  el: '#dynamicexample',
-  data: function () {
-    return {
-      direction: 'left'
+很快它就会失控。这也是我们针对需要向任意更深层级的组件提供上下文信息时推荐[依赖注入](https://cn.vuejs.org/v2/guide/components-edge-cases.html#依赖注入)的原因。
+
+> 在绝大多数情况下，触达父级组件会使得你的应用更难调试和理解，尤其是当你变更了父级组件的数据的时候。当我们稍后回看那个组件的时候，很难找出那个变更是从哪里发起的。
+
+### 1.5.3 访问子组件实例或子元素
+
+- `ref`获取`DOM`元素和组件的引用，同时获取子组件的方法和值。`ref`  是 英文单词 【`reference`】引用类型 。
+
+
+```html
+<base-input ref="usernameInput"></base-input>
+```
+
+- 现在在你已经定义了这个 `ref` 的组件里，你可以使用：
+
+```js
+this.$refs.usernameInput
+```
+
+- 来访问这个 `base-input` 实例，以便不时之需。
+
+- 通过ref还可以父组件调用子组件的方法，获取子组件的数据。
+
+```html
+<login ref="mylogin"></login>
+```
+
+- 子组件
+
+```js
+methods: {
+    show() {
+        console.log('调用了子组件的方法')
     }
+}
+```
+
+- 父组件
+
+```js
+methods: {
+    getElement() {
+        this.$refs.mylogin.show()
+    }
+  },
+```
+
+
+
+### 1.5.4 依赖注入
+
+在此之前，在我们描述[访问父级组件实例](https://cn.vuejs.org/v2/guide/components-edge-cases.html#访问父级组件实例)的时候，使用 `$parent`，不幸的是，使用 `$parent` property 无法很好的扩展到更深层级的嵌套组件上。这也是依赖注入的用武之地，它用到了两个新的实例选项：`provide` 和 `inject`。
+
+`provide` 选项允许我们指定我们想要**提供**给后代组件的数据/方法。
+
+```js
+provide: function () {
+  return {
+    getMap: this.getMap
   }
-})
+}
 ```
 
-- 在很多时候，你可能想在 `bind` 和 `update` 时触发相同行为，而不关心其它的钩子。比如这样写:
+然后在任何后代组件里，我们都可以使用 `inject` 选项来接收指定的我们想要添加在这个实例上的属性
 
 ```js
-Vue.directive('color-swatch', function (el, binding) {
-  el.style.backgroundColor = binding.value
-})
+inject: ['getMap']
 ```
 
-   
+相比 `$parent` 来说，这个用法可以让我们在*任意*后代组件中访问 `getMap`，而不需要暴露整个实例。这允许我们更好的持续研发该组件，而不需要担心我们可能会改变/移除一些子组件依赖的东西。同时这些组件之间的接口是始终明确定义的，就和 `props` 一样。
 
-## 1.3 自定义私有指令
+> 然而，依赖注入还是有负面影响的。它将你应用程序中的组件与它们当前的组织方式耦合起来，使重构变得更加困难。同时所提供的 property 是非响应式的。这是出于设计的考虑，因为使用它们来创建一个中心化规模化的数据跟[使用 `$root`](https://cn.vuejs.org/v2/guide/components-edge-cases.html#访问根实例)做这件事都是不够好的。如果你想要共享的这个 property 是你的应用特有的，而不是通用化的，或者如果你想在祖先组件中更新所提供的数据，那么这意味着你可能需要换用一个像 [Vuex](https://github.com/vuejs/vuex) 这样真正的状态管理方案了。
+>
+> `provide` 和 `inject` 主要在开发高阶插件/组件库时使用。并不推荐用于普通应用程序代码中。
+
+这对选项需要一起使用，以允许一个祖先组件向其所有子孙后代注入一个依赖，不论组件层次有多深，并在起上下游关系成立的时间里始终生效。如果你熟悉 React，这与 React 的上下文特性很相似。
+
+- `provide` 选项应该是一个对象或返回一个对象的函数。该对象包含可注入其子孙的 property
+
+- `inject` 选项应该是：
+
+  > - 一个字符串数组，或一个对象，对象的 key 是本地的绑定名，value 是：
+  >   - 在可用的注入内容中搜索用的 key (字符串或 Symbol)，或一个对象，该对象的：
+  >     - `from` property 是在可用的注入内容中搜索用的 key (字符串或 Symbol)
+  >     - `default` property 是降级情况下使用的 value
+
+> 提示：`provide` 和 `inject` 绑定并不是可响应的。这是刻意为之的。然而，如果你传入了一个可监听的对象，那么其对象的 property 还是可响应的。
+
+示例：
 
 ```js
-directives: {
-   focus: {
-      inserted: function (el,binding) {
-         el.focus()
-      }
-   }
+// 父级组件提供 'foo'
+var Provider = {
+  provide: {
+    foo: 'bar'
+  },
+  // ...
+}
+
+// 子组件注入 'foo'
+var Child = {
+  inject: ['foo'],
+  created () {
+    console.log(this.foo) // => "bar"
+  }
+  // ...
 }
 ```
 
 
 
-# 五、Vue中的属性
+# 四、Vue中的属性
 
 ## 1.1 methods 方法
 
@@ -2338,7 +2037,7 @@ var vm = new Vue({
 
 
 
-# 六、生命周期
+# 五、生命周期
 
 > - `生命周期`：从Vue实例`创建`、`运行`、到`销毁`期间，总是伴随着各种各样的事件，这些事件，统称为`生命周期`！
 > - `生命周期钩子`：每个 Vue 实例在被创建时都要经过一系列的初始化过程——例如，需要设置数据监听、编译模板、将实例挂载到 DOM 并在数据变化时更新 DOM 等。同时在这个过程中也会运行一些叫做**生命周期钩子**的函数，这给了用户在不同阶段添加自己的代码的机会。
@@ -2400,7 +2099,7 @@ var vm = new Vue({
 
 
 
-# 七、过渡&动画
+# 六、过渡&动画
 
 - Vue 在插入、更新或者移除 DOM 时，提供多种不同方式的应用过渡效果。包括以下工具：
 
@@ -3085,7 +2784,7 @@ var vm = new Vue({
 
 
 
-# 八、Class 与 Style 绑定
+# 七、Class 与 Style 绑定
 
 
 
@@ -3226,27 +2925,20 @@ data: {
 
 这样写只会渲染数组中最后一个被浏览器支持的值。在本例中，如果浏览器支持不带浏览器前缀的 flexbox，那么就只会渲染 `display: flex`。
 
-# 九、插槽
+# 八、插槽
 
 ## 1.1 插槽内容
 
-Vue 实现了一套内容分发的 API，将 slot 元素作为承载分发内容的出口。
-
-它允许你像这样合成组件：
+Vue 实现了一套内容分发的 API，将 slot 元素作为承载分发内容的出口。它允许你像这样合成组件：
 
 ```vue
-<navigation-link url="/profile">
-  Your Profile
-</navigation-link>
+<navigation-link url="/profile"> Your Profile </navigation-link>
 ```
 
 然后你在的模板中可能会写为：
 
 ```vue
-<a
-  v-bind:href="url"
-  class="nav-link"
->
+<a v-bind:href="url" class="nav-link" >
   <slot></slot>
 </a>
 ```
@@ -3271,7 +2963,7 @@ Vue 实现了一套内容分发的 API，将 slot 元素作为承载分发内容
 </navigation-link>
 ```
 
-如果 组件内部没有包含 slot 元素，则该组件起始标签和结束标签之间的任何内容都会被抛弃。
+如果组件内部没有包含 slot 元素，则该组件起始标签和结束标签之间的任何内容都会被抛弃。
 
 
 
@@ -3280,12 +2972,10 @@ Vue 实现了一套内容分发的 API，将 slot 元素作为承载分发内容
 当你想在一个插槽中使用数据时，例如：
 
 ```vue
-<navigation-link url="/profile">
-  Logged in as {{ user.name }}
-</navigation-link>
+<navigation-link url="/profile"> Logged in as {{ user.name }} </navigation-link>
 ```
 
-该插槽跟模板的其它地方一样可以访问相同的实例属性 (也就是相同的“作用域”)，而**不能**访问 `navigation-link` 的作用域。例如 `url` 是访问不到的。作为一条规则，请记住：
+该插槽跟模板的其它地方一样可以访问相同的实例属性 (也就是相同的“作用域”)，而**不能**访问 `navigation-link` 的作用域。请记住：
 
 > 父级模板里的所有内容都是在父级作用域中编译的；子模板里的所有内容都是在子作用域中编译的。
 
@@ -3310,9 +3000,7 @@ Vue 实现了一套内容分发的 API，将 slot 元素作为承载分发内容
 后备内容“Submit”将会被渲染：
 
 ```vue
-<button type="submit">
-  Submit
-</button>
+<button type="submit"> Submit </button>
 ```
 
 
@@ -3323,50 +3011,29 @@ Vue 实现了一套内容分发的 API，将 slot 元素作为承载分发内容
 
 ```vue
 <div class="container">
-  <header>
-    <!-- 我们希望把页头放这里 -->
-  </header>
-  <main>
-    <!-- 我们希望把主要内容放这里 -->
-  </main>
-  <footer>
-    <!-- 我们希望把页脚放这里 -->
-  </footer>
+  <header> <!-- 我们希望把页头放这里 --> </header>
+  <main> <!-- 我们希望把主要内容放这里 --> </main>
+  <footer> <!-- 我们希望把页脚放这里 --> </footer>
 </div>
 ```
 
-对于这样的情况，slot 元素有一个特殊的 attribute：`name`。这个 attribute 可以用来定义额外的插槽：
+对于这样的情况，slot 元素有一个特殊的属性：`name`。这个属性可以用来定义额外的插槽，`base-layout`组件：
 
 ```vue
 <div class="container">
-  <header>
-    <slot name="header"></slot>
-  </header>
-  <main>
-    <slot></slot>
-  </main>
-  <footer>
-    <slot name="footer"></slot>
-  </footer>
+  <header> <slot name="header"></slot> </header>
+  <main> <slot></slot> </main>
+  <footer> <slot name="footer"></slot> </footer>
 </div>
 ```
 
-一个不带 `name` 的 slot 出口会带有隐含的名字“default”。
-
-在向具名插槽提供内容的时候，我们可以在一个 ` 元素上使用 `v-slot` 指令，并以 `v-slot` 的参数的形式提供其名称：
+一个不带 `name` 的 slot 出口会带有隐含的名字“default”。在向具名插槽提供内容的时候，我们可以在一个元素上使用 `v-slot` 指令，并以 `v-slot` 的参数的形式提供其名称：
 
 ```vue
 <base-layout>
-  <template v-slot:header>
-    <h1>Here might be a page title</h1>
-  </template>
-
-  <p>A paragraph for the main content.</p>
-  <p>And another one.</p>
-
-  <template v-slot:footer>
-    <p>Here's some contact info</p>
-  </template>
+    <template v-slot:header> <h1>Here might be a page title</h1> </template>
+    <template> <p>And another one.</p> </template>
+    <template v-slot:footer> <p>Here's some contact info</p> </template>
 </base-layout>
 ```
 
@@ -3387,33 +3054,27 @@ Vue 实现了一套内容分发的 API，将 slot 元素作为承载分发内容
 </div>
 ```
 
-
+> 注意 **`v-slot` 只能添加在template上** (只有[一种例外情况](https://cn.vuejs.org/v2/guide/components-slots.html#独占默认插槽的缩写语法))，这一点和已经废弃的 [`slot` attribute](https://cn.vuejs.org/v2/guide/components-slots.html#废弃了的语法) 不同。
 
 ## 1.5 作用域插槽
 
 有时让插槽内容能够访问子组件中才有的数据是很有用的。例如，设想一个带有如下模板的 `current-user`组件：
 
 ```vue
-<span>
-  <slot>{{ user.lastName }}</slot>
-</span>
+<span> <slot>{{ user.lastName }}</slot> </span>
 ```
 
 我们可能想换掉备用内容，用名而非姓来显示。如下：
 
 ```vue
-<current-user>
-  {{ user.firstName }}
-</current-user>
+<current-user> {{ user.firstName }} </current-user>
 ```
 
-然而上述代码不会正常工作，因为只有 `current-user` 组件内部可以访问到 `user` 而我们提供的内容是在父级渲染的。为了让 `user` 在父级的插槽内容中可用，我们可以将 `user` 作为 `slot` 元素的一个 attribute 绑定上去：
+然而上述代码不会正常工作，因为只有 `current-user` 组件内部可以访问到 `user` 而我们提供的内容是在父级渲染的。为了让 `user` 在父级的插槽内容中可用，我们可以将 `user` 作为 `slot` 元素的一个属性绑定上去：
 
 ```vue
 <span>
-  <slot v-bind:user="user">
-    {{ user.lastName }}
-  </slot>
+  <slot :user="user"> {{ user.lastName }} </slot>
 </span>
 ```
 
@@ -3427,92 +3088,74 @@ Vue 实现了一套内容分发的 API，将 slot 元素作为承载分发内容
 </current-user>
 ```
 
-在上述情况下，当被提供的内容*只有*默认插槽时，组件的标签才可以被当作插槽的模板来使用。这样我们就可以把 `v-slot` 直接用在组件上,这种写法还可以更简单。就像假定未指明的内容对应默认插槽一样，不带参数的 `v-slot` 被假定对应默认插槽：
+在这个例子中，我们选择将包含所有插槽 prop 的对象命名为 `slotProps`，但你也可以使用任意你喜欢的名字。
 
-```vue
+### 1.5.1 独占默认插槽的缩写
+
+在上述情况下，当被提供的内容*只有*默认插槽时，组件的标签才可以被当作插槽的模板来使用。这样我们就可以把 `v-slot` 直接用在组件上：
+
+```html
+<current-user v-slot:default="slotProps"> {{ slotProps.user.firstName }} </current-user>
+```
+
+这种写法还可以更简单。就像假定未指明的内容对应默认插槽一样，不带参数的 `v-slot` 被假定对应默认插槽：
+
+```html
+<current-user v-slot="slotProps"> {{ slotProps.user.firstName }} </current-user>
+```
+
+注意默认插槽的缩写语法**不能**和具名插槽混用，因为它会导致作用域不明确：
+
+```html
+<!-- 无效，会导致警告 -->
 <current-user v-slot="slotProps">
   {{ slotProps.user.firstName }}
+  <template v-slot:other="otherSlotProps">
+    slotProps is NOT available here
+  </template>
 </current-user>
 ```
 
-### 具名插槽和作用域插槽共用
+只要出现多个插槽，请始终为*所有的*插槽使用完整的基于template的语法：
 
-组件内部：以下组件，我们添加了一个具名插槽（hello），并且传了一个插槽props `mgs`
-
-```vue
-<template>
-  <div class="hello">
-    <slot name="hello" :msg="msg"></slot>
-  </div>
-</template>
-
-<script>
-export default {
-  name: 'HelloWorld',
-  data() {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    };
-  }
-};
-</script>
-```
-
-在使用组件的地方，我们使用了`HelloWorld`组件，`v-slot:hello`表示我们绑定了hello插槽，同时，v-slot:hello="slotProps" 中的`slotProps`表示这个插槽传过来的props对象
-
-```vue
-<template>
-  <div id="test">
-    <HelloWorld>
-      <template v-slot:hello="slotProps">
-        <span>{{slotProps.msg}}</span>
-      </template>
-    </HelloWorld>
-  </div>
-</template>
-```
-
-解析完后相当于：
-
-```vue
-<template>
-  <div class="hello">
-    <span>Welcome to Your Vue.js App</span>
-  </div>
-</template>
-```
-
-
-
-## 1.6 解构插槽 Prop
-
-在支持的环境下 ([单文件组件](https://cn.vuejs.org/v2/guide/single-file-components.html)或[现代浏览器](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#浏览器兼容))，你也可以使用 [ES2015 解构](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#解构对象)来传入具体的插槽 prop，如下：
-
-```vue
-<current-user v-slot="{ user }">
-  {{ user.firstName }}
+```html
+<current-user>
+  <template v-slot:default="slotProps"> {{ slotProps.user.firstName }} </template>
+  <template v-slot:other="otherSlotProps"> ... </template>
 </current-user>
+```
+
+### 1.5.2 结构插槽Prop
+
+作用域插槽的内部工作原理是将你的插槽内容包括在一个传入单个参数的函数里：
+
+```js
+function (slotProps) {
+  // 插槽内容
+}
+```
+
+这意味着 `v-slot` 的值实际上可以是任何能够作为函数定义中的参数的 JavaScript 表达式。所以在支持的环境下 ([单文件组件](https://cn.vuejs.org/v2/guide/single-file-components.html)或[现代浏览器](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#浏览器兼容))，你也可以使用 [ES2015 解构](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#解构对象)来传入具体的插槽 prop，如下：
+
+```html
+<current-user v-slot="{ user }"> {{ user.firstName }} </current-user>
 ```
 
 这样可以使模板更简洁，尤其是在该插槽提供了多个 prop 的时候。它同样开启了 prop 重命名等其它可能，例如将 `user` 重命名为 `person`：
 
-```vue
-<current-user v-slot="{ user: person }">
-  {{ person.firstName }}
-</current-user>
+```html
+<current-user v-slot="{ user: person }"> {{ person.firstName }} </current-user>
 ```
 
 你甚至可以定义后备内容，用于插槽 prop 是 undefined 的情形：
 
-```vue
+```html
 <current-user v-slot="{ user = { firstName: 'Guest' } }">
   {{ user.firstName }}
 </current-user>
 ```
 
-
-
-## 1.7 动态插槽名
+## 1.6 动态插槽名
 
 [动态指令参数](https://cn.vuejs.org/v2/guide/syntax.html#动态参数)也可以用在 `v-slot` 上，来定义动态的插槽名：
 
@@ -3559,6 +3202,18 @@ export default {
   {{ user.firstName }}
 </current-user>
 ```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
