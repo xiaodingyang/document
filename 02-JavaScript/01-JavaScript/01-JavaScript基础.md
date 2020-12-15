@@ -795,24 +795,50 @@ console.log(.1e-3);  	//0.0001
 
 ## 1.3 变量类型
 
-这个变量是什么类型，和赋的值有关系，而和定义的时候是没有关系的。定义的时候，都是用var关键字定义的，检测数据类型用
+JS 中分为七种内置类型(加上symbol八种)，七种内置类型又分为两大类型：**基本类型**，**Function**和**对象**（Object）。
+
+这个变量是什么类型，和赋的值有关系，而和定义的时候是没有关系的。定义的时候，都是用var关键字定义的，检测数据类型用`typeof`，`typeof` 对于基本类型，除了 `null` 都可以显示正确的类型：
 
 ```javascript
-var a = 10;
-console.log(typeof a);
+typeof 1 // 'number'
+typeof '1' // 'string'
+typeof undefined // 'undefined'
+typeof true // 'boolean'
+typeof Symbol() // 'symbol'
+typeof b // b 没有声明，但是还会显示 undefined
 ```
 
+`typeof` 对于对象，除了函数都会显示 `object`
 
+```js
+typeof [] // 'object'
+typeof {} // 'object'
+typeof console.log // 'function'
+```
 
-### 1.3.1 基本数据类型
+对于 `null` 来说，虽然它是基本类型，但是会显示 `object`，这是一个存在很久了的 Bug
 
-基础数据类型5种：
+```js
+typeof null // 'object'
+```
+
+### 1.3.1 基本类型
+
+基础数据类型6种，其中 JS 的数字类型是浮点类型的，没有整型。并且浮点类型基于 IEEE 754标准实现，在使用中会遇到某些 [Bug](https://yuchengkai.cn/docs/frontend/##为什么-01--02--03)。`NaN` 也属于 `number` 类型，并且 `NaN` 不等于自身：
 
 - number               数字类型（一般的数字 和 NaN）    
 - string                   字符串类型
 - undefined           undefined类型，变量未定义时的值，这个值自己是一种类型
 - boolean              布尔类型，仅有两个值true 和 false，讲if语句时我们细说
 - null                      空指针对象
+- symbol
+
+对于基本类型来说，如果使用字面量的方式，那么这个变量只是个字面量，只有在必要的时候才会转换为对应的类型
+
+```js
+let a = 111 // 这只是字面量，不是 number 类型
+a.toString() // 使用时候才会转换为对象类型
+```
 
 #### 1.3.1.1 number 数字类型
 
