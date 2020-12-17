@@ -1184,7 +1184,7 @@ const router = new VueRouter({
 
 钩子函数执行顺序：
 
-> beforeEach --> beforeRouteUpdate --> beforeEnter --> beforeRouteEnter --> 
+> beforeEach --> beforeRouteUpdate（如果组件重用） --> beforeEnter --> beforeRouteEnter --> 
 >
 > beforeResolve --> afterEach --> beforeRouteLeave --> beforeEach
 

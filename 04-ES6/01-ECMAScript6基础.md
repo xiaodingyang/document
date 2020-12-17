@@ -1808,7 +1808,7 @@ restricted();
 
 
 
-### 1.6.4 数组实例的 find() 和 findIndex()
+### 1.6.4  find() 和 findIndex()
 
 - 数组实例的`find`方法，用于找出第一个符合条件的数组成员。它的参数是一个回调函数，所有数组成员依次执行该回调函数，直到找出第一个返回值为`true`的成员，然后返回该成员。如果没有符合条件的成员，则返回`undefined`。
 
@@ -1858,7 +1858,7 @@ restricted();
 
 
 
-### 1.6.5 数组实例的 fill()
+### 1.6.5  fill()
 
 - `fill`方法使用给定值，填充一个数组
 
@@ -1882,11 +1882,9 @@ restricted();
 
 
 
-### 1.6.6 数组实例的 entries()，keys() 和 values()
+### 1.6.6  entries()，keys() ， values()
 
-- ES6 提供三个新的方法——`entries()`，`keys()`和`values()`——用于遍历数组。它们都返回一个遍历器对象（详见《Iterator》一章），可以用`for...of`循环进行遍历，唯一的区别是：
-
-- `keys()`是对键名的遍历、`values()`是对键值的遍历，`entries()`是对键值对的遍历。
+- ES6 提供三个新的方法——`entries()`，`keys()`和`values()`——用于遍历数组。它们都返回一个遍历器对象（详见《Iterator》一章），可以用`for...of`循环进行遍历，唯一的区别是：`keys()`是对键名的遍历、`values()`是对键值的遍历，`entries()`是对键值对的遍历。
 
   ```javascript
   for (let index of ['a', 'b'].keys()) {
@@ -1907,6 +1905,7 @@ restricted();
   // 0 "a"
   // 1 "b"
   ```
+
 
 
 
@@ -2345,7 +2344,158 @@ restricted();
 
 
 
-### 1.8.2 Object.assign()
+### 1.8.2 Object.keys()
+
+ES5 引入了`Object.keys`方法，返回一个数组，成员是参数对象自身的（不含继承的）所有可遍历（enumerable）属性的键名。
+
+```javascript
+var obj = { foo: 'bar', baz: 42 };
+Object.keys(obj)
+// ["foo", "baz"]
+```
+
+ES2017 [引入](https://github.com/tc39/proposal-object-values-entries)了跟`Object.keys`配套的`Object.values`和`Object.entries`，作为遍历一个对象的补充手段，供`for...of`循环使用。
+
+```javascript
+let {keys, values, entries} = Object;
+let obj = { a: 1, b: 2, c: 3 };
+
+for (let key of keys(obj)) {
+  console.log(key); // 'a', 'b', 'c'
+}
+
+for (let value of values(obj)) {
+  console.log(value); // 1, 2, 3
+}
+
+for (let [key, value] of entries(obj)) {
+  console.log([key, value]); // ['a', 1], ['b', 2], ['c', 3]
+}
+```
+
+### Object.values()
+
+`Object.values`方法返回一个数组，成员是参数对象自身的（不含继承的）所有可遍历（enumerable）属性的键值。
+
+```javascript
+const obj = { foo: 'bar', baz: 42 };
+Object.values(obj)
+// ["bar", 42]
+```
+
+返回数组的成员顺序，与本章的《属性的遍历》部分介绍的排列规则一致。
+
+```javascript
+const obj = { 100: 'a', 2: 'b', 7: 'c' };
+Object.values(obj)
+// ["b", "c", "a"]
+```
+
+上面代码中，属性名为数值的属性，是按照数值大小，从小到大遍历的，因此返回的顺序是`b`、`c`、`a`。
+
+`Object.values`只返回对象自身的可遍历属性。
+
+```javascript
+const obj = Object.create({}, {p: {value: 42}});
+Object.values(obj) // []
+```
+
+上面代码中，`Object.create`方法的第二个参数添加的对象属性（属性`p`），如果不显式声明，默认是不可遍历的，因为`p`的属性描述对象的`enumerable`默认是`false`，`Object.values`不会返回这个属性。只要把`enumerable`改成`true`，`Object.values`就会返回属性`p`的值。
+
+```javascript
+const obj = Object.create({}, {p:
+  {
+    value: 42,
+    enumerable: true
+  }
+});
+Object.values(obj) // [42]
+```
+
+`Object.values`会过滤属性名为 Symbol 值的属性。
+
+```javascript
+Object.values({ [Symbol()]: 123, foo: 'abc' });
+// ['abc']
+```
+
+如果`Object.values`方法的参数是一个字符串，会返回各个字符组成的一个数组。
+
+```javascript
+Object.values('foo')
+// ['f', 'o', 'o']
+```
+
+上面代码中，字符串会先转成一个类似数组的对象。字符串的每个字符，就是该对象的一个属性。因此，`Object.values`返回每个属性的键值，就是各个字符组成的一个数组。
+
+如果参数不是对象，`Object.values`会先将其转为对象。由于数值和布尔值的包装对象，都不会为实例添加非继承的属性。所以，`Object.values`会返回空数组。
+
+```javascript
+Object.values(42) // []
+Object.values(true) // []
+```
+
+### Object.entries()
+
+`Object.entries()`方法返回一个数组，成员是参数对象自身的（不含继承的）所有可遍历（enumerable）属性的键值对数组。
+
+```javascript
+const obj = { foo: 'bar', baz: 42 };
+Object.entries(obj)
+// [ ["foo", "bar"], ["baz", 42] ]
+```
+
+除了返回值不一样，该方法的行为与`Object.values`基本一致。
+
+如果原对象的属性名是一个 Symbol 值，该属性会被忽略。
+
+```javascript
+Object.entries({ [Symbol()]: 123, foo: 'abc' });
+// [ [ 'foo', 'abc' ] ]
+```
+
+上面代码中，原对象有两个属性，`Object.entries`只输出属性名非 Symbol 值的属性。将来可能会有`Reflect.ownEntries()`方法，返回对象自身的所有属性。
+
+`Object.entries`的基本用途是遍历对象的属性。
+
+```javascript
+let obj = { one: 1, two: 2 };
+for (let [k, v] of Object.entries(obj)) {
+  console.log(
+    `${JSON.stringify(k)}: ${JSON.stringify(v)}`
+  );
+}
+// "one": 1
+// "two": 2
+```
+
+`Object.entries`方法的另一个用处是，将对象转为真正的`Map`结构。
+
+```javascript
+const obj = { foo: 'bar', baz: 42 };
+const map = new Map(Object.entries(obj));
+map // Map { foo: "bar", baz: 42 }
+```
+
+自己实现`Object.entries`方法，非常简单。
+
+```javascript
+// Generator函数的版本
+function* entries(obj) {
+  for (let key of Object.keys(obj)) {
+    yield [key, obj[key]];
+  }
+}
+
+// 非Generator函数的版本
+function entries(obj) {
+  let arr = [];
+  for (let key of Object.keys(obj)) {
+    arr.push([key, obj[key]]);
+  }
+  return arr;
+}
+```
 
 
 

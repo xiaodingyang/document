@@ -569,11 +569,6 @@ const local = {
 export default {
   install: function(Vue, options) {
     Vue.prototype.$local = local;
-    Vue.mixin({
-      created: function() {
-        console.log("混入！");
-      }
-    });
   }
 };
 ```

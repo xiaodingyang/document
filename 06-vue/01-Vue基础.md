@@ -1387,54 +1387,34 @@ export default {
 
 一个组件上的 `v-model` 默认会利用名为 `value` 的 prop 和名为 `input` 的事件，但是像单选框、复选框等类型的输入控件可能会将 `value` attribute 用于[不同的目的](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox#Value)。`model` 选项可以用来避免这样的冲突：
 
-```vue
-<template>
-  <div>
-    <input type="text" :value="value" @input="$emit('input', $event.target.value)" />
-  </div>
-</template>
-
-<script>
-export default {
+```jsx
+Vue.component('base-checkbox', {
   model: {
-    prop: 'value',
-    event: 'input'
+    prop: 'checked',
+    event: 'change'
   },
   props: {
-    value: String
-  }
-};
-</script>
+    checked: Boolean
+  },
+  template: `
+    <input
+      type="checkbox"
+      v-bind:checked="checked"
+      v-on:change="$emit('change', $event.target.checked)"
+    >
+  `
+})
 ```
 
 现在在这个组件上使用 `v-model` 的时候：
 
 ```html
-<template>
-  <div>
-    <Test v-model="value"></Test>
-    <div>{{value}}</div>
-  </div>
-</template>
-
-<script>
-import Test from './test';
-export default {
-  data() {
-    return {
-      value: '初始数据'
-    };
-  },
-  components: { Test }
-};
-</script>
+<base-checkbox v-model="lovingVue"></base-checkbox>
 ```
 
-这里的 `value` 的值将会传入这个名为 `value` 的 prop。同时当 `` 触发一个 `input` 事件并附带一个新的值的时候，这个 `value` 的 property 将会被更新。div中的value值也会动态的更新。
+这里的 `lovingVue` 的值将会传入这个名为 `checked` 的 prop。同时当 `<base-checkbox>` 触发一个 `change` 事件并附带一个新的值的时候，这个 `lovingVue` 的 property 将会被更新。
 
-> 注意你仍然需要在组件的 `props` 选项里声明 `value` 这个 prop。
-
-> 结合之前我们学习过的基础组件的自动化全局注册，我们可以做出全局的自定义v-model表单
+> 注意你仍然需要在组件的 `props` 选项里声明 checked 这个 prop。
 
 
 
@@ -2045,6 +2025,8 @@ var vm = new Vue({
 
 ![1552569246936](https://xiaodingyang-1300707163.cos.ap-chengdu.myqcloud.com/Markdown/1552569246936.png)
 
+
+
 ## 1.1 创建期间的生命周期函数
 
 > - `beforeCreate`：实例刚在内存中被创建出来，此时，还没有初始化好 data 和 methods 属性
@@ -2067,6 +2049,16 @@ var vm = new Vue({
 > - `destroyed`：Vue 实例销毁后调用。调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。
 
 
+
+- 在beforeCreate和created钩子函数之间的生命周期 ：在这个生命周期之间，进行初始化事件，进行数据的观测
+
+- beforeMount和mounted 钩子函数间的生命周期：此时是给vue实例对象添加$el成员，并且替换掉挂在的DOM元素。
+
+- beforeUpdate钩子函数和updated钩子函数间的生命周期：当vue发现data中的数据发生了改变，会触发对应组件的重新渲染，先后调用beforeUpdate和updated钩子函数。在beforeUpdate可以监听到data的变化，但是view层没有被重新渲染，view层的数据没有变化。等到updated的时候，view层才被重新渲染，数据更新。
+
+- beforeDestroy和destroyed钩子函数间的生命周期：beforeDestroy钩子函数在实例销毁之前调用。在这一步，实例仍然完全可用。
+
+  destroyed钩子函数在Vue 实例销毁后调用。调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。
 
 ## 1.4 activated
 
