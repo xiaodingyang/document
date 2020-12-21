@@ -530,7 +530,7 @@ loginAction (loginData) {
 ##### 4. 将 reducer 给 store
 
 ```js
-import * as reducers form './reducer'; 
+import reducers form './reducer'; 
 import { createStore, combineReducers } from 'redux';
 const reducer = combineReducers(reducers) // 合并reducer
 const store = createStore(reducer);
