@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `myblog` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `myblog`;
 -- MySQL dump 10.13  Distrib 8.0.20, for Win64 (x86_64)
 --
 -- Host: localhost    Database: myblog
@@ -117,8 +115,10 @@ CREATE TABLE `menu` (
   `label` varchar(255) DEFAULT NULL COMMENT '菜单名称',
   `auth` int NOT NULL COMMENT '访问权限（0公共，1普通用户，2管理员）',
   `type` int NOT NULL COMMENT '菜单类型（0菜单目录，1按钮路由）',
+  `sort` int DEFAULT NULL COMMENT '菜单排序',
+  `component` varchar(255) NOT NULL COMMENT '组件路径',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,7 +127,7 @@ CREATE TABLE `menu` (
 
 LOCK TABLES `menu` WRITE;
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
-INSERT INTO `menu` VALUES (3,14,'/system','system','el-icon-s-tools','系统管理',2,0),(4,3,'/system/menu','menu','el-icon-menu','菜单管理',2,0),(5,14,'/index','index','el-icon-s-home','首页',0,0),(6,3,'/system/user','user','el-icon-s-custom','用户管理',1,0),(13,NULL,'/login','login',NULL,NULL,0,1),(14,NULL,'/','dashboard',NULL,NULL,0,1),(15,6,'aa','aa',NULL,'aa',0,0);
+INSERT INTO `menu` VALUES (4,17,'/system/menu','menu','el-icon-menu','菜单管理',2,0,1,'views/system/menu/index.vue'),(6,17,'/system/user','user','el-icon-s-custom','用户管理',1,0,2,'views/system/user/index.vue'),(17,NULL,'/system','system','el-icon-s-tools','系统管理',2,0,1,'views/system/index.vue');
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -229,4 +229,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-25 17:33:05
+-- Dump completed on 2020-12-31 18:59:50
